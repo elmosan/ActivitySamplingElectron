@@ -1,0 +1,16 @@
+{
+  "name": "activitysampling",
+  "version": "1.0.0",
+  "description": "Log your activities",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "o2xygen",
+  "license": "ISC",
+  "devDependencies": {
+    "bootstrap": "^4.0.0",
+    "electron": "^1.8.3",
+    "node-notifier": "^5.2.1"
+  }
+}
