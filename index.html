@@ -14,8 +14,11 @@
 
     </br></br>
     <div class="form-group">
-      <label for="act">Activity:</label>
-      <input type="text" class="form-control" id="act">
+      <label for="inputActivity">Activity:</label>
+      <input type="text" class="form-control" id="inputActivity">
+    </div>
+    <div>
+      <pre id="preOutput"/>
     </div>
 
     </br></br>
@@ -23,8 +26,11 @@
 
     <script>
       // You can also require other files to run in this process
-      require('./renderer.js')
-      require('./notifier.js')
+      require('./renderer.js');
+      require('./notifier.js');
+      require('./script.js');
+
+      window.$ = window.jQuery = require('jquery');
     </script>
   </body>
 </html>

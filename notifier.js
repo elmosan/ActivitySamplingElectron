@@ -1,6 +1,8 @@
 const WindowsBalloon = require('node-notifier').WindowsBalloon;
 // const WindowsToaster = require('node-notifier').WindowsToaster;
 const path  = require('path');
+const $ = require('jquery');
+// const ipcRenderer  = require('electron').ipcRenderer ;
 
 var notifier = new WindowsBalloon({});
 // var notifier = new WindowsToaster({});
@@ -28,7 +30,23 @@ function doNotify(evt){
   });
 }
 
+// ipcRenderer.on('timer-message', (event, arg) => {
+//   doNotify();
+// });
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("btnStart").addEventListener("click", doNotify);
+// document.addEventListener('DOMContentLoaded', function() {
+  // document.getElementById("btnStart").addEventListener("click", doNotify);
+// });
+
+setInterval(function() {
+  console.log("Timer intervall", new Date());
+  // ipcRenderer.send('timer-message', 'tick');
+
+  var args;
+  doNotify(args);
+
+}, 10000);
+
+$(function() {
+  $('#btnStart')[0].addEventListener("click", doNotify);
 });

@@ -8,15 +8,24 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+const storage = require('electron-json-storage');
+// const ticker = require('./timer.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let appIcon;
+let iconPath = path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico');
+let dataPath = storage.getDataPath();
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({
+    title: 'ActivitySampling',
+    icon: iconPath,
+    width: 800,
+    height: 600
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -36,7 +45,20 @@ function createWindow () {
     mainWindow = null
   })
 
-  appIcon = new Tray(path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico'));
+  // console.log(dataPath, new Date());
+  storage.set('ActivitySampling', { devTools: true, timerIntervall: 900000 });
+
+  storage.get('ActivitySampling', function(error, data){
+    if (error) throw error;
+
+    console.log(data, new Date());
+
+    if (data.devTools) {
+      mainWindow.toggleDevTools();
+    }
+  });
+
+  appIcon = new Tray(iconPath);
   var contextMenu = Menu.buildFromTemplate([
     {
       label: 'About'
