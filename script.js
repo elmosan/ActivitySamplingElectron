@@ -7,10 +7,11 @@ module.exports = script = {
   writeLog: function writeLog(){
     var timeStamp = getTimeStamp();
     var input = $('#inputActivity')[0].value;
-    var pre = $('#preOutput')[0];
+    var lst = $('#lstOutput')[0];
     var text = timeStamp + " " + input + " \n";
+
     writeToLogFile(text);
-    pre.innerHTML += text;
+    createListElement(text, lst);
   }
 }
 
@@ -22,6 +23,26 @@ function writeToLogFile(text){
   else {
     jetpack.append(file, text, {});
   }
+}
+
+function createListElement(text, list){
+  var entry = document.createElement('li');
+  var att = document.createAttribute('tabindex');
+
+  att.value = "1";
+  entry.classList.add('list-group-item');
+  entry.setAttributeNode(att);
+  entry.appendChild(document.createTextNode(text));
+  list.appendChild(entry);
+
+  entry.addEventListener("dblclick", selectText);
+}
+
+function selectText(evt){
+  var entry = evt.target;
+  var text = entry.innerText.substr(20);
+
+  $('#inputActivity')[0].value = text;
 }
 
 function getTimeStamp() {
