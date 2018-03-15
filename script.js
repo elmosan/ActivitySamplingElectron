@@ -2,8 +2,9 @@
 const $ = require('jquery');
 const jetpack = require('fs-jetpack');
 
-function onKeyUp(evt) {
-  if (evt.keyCode == 13) {
+
+module.exports = script = {
+  writeLog: function writeLog(){
     var timeStamp = getTimeStamp();
     var input = $('#inputActivity')[0].value;
     var pre = $('#preOutput')[0];
@@ -51,9 +52,11 @@ function getTimeStamp() {
   return yyyy+'.'+mm+'.'+dd+' '+hh+':'+MM+':'+ss;
 }
 
-// document.addEventListener('DOMContentLoaded', function() {
-// document.getElementById("inputActivity").addEventListener("keyup", onKeyUp);
-// });
+function onKeyUp(evt) {
+  if (evt.keyCode == 13) {
+    script.writeLog();
+  }
+}
 
 $(function() {
   $('#inputActivity')[0].addEventListener("keyup", onKeyUp);

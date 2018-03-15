@@ -2,18 +2,21 @@ const WindowsBalloon = require('node-notifier').WindowsBalloon;
 // const WindowsToaster = require('node-notifier').WindowsToaster;
 const path  = require('path');
 const $ = require('jquery');
+const script = require('./script.js');
 // const ipcRenderer  = require('electron').ipcRenderer ;
 
-var notifier = new WindowsBalloon({});
+var notifier;
 // var notifier = new WindowsToaster({});
 
 function doNotify(evt){
+  notifier = new WindowsBalloon({});
+  
   notifier.notify({
     title: 'ActivitySampling',
     message: 'What are you doing?',
     icon: path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico'),
     sound: true,
-    time: 5000,
+    time: 8000,
     wait: true,
     type: 'info'
   },
@@ -23,6 +26,7 @@ function doNotify(evt){
 
   notifier.on('click', function(notifierObject, options) {
     // Triggers if `wait: true` and user clicks notification
+    script.writeLog();
   });
 
   notifier.on('timeout', function(notifierObject, options) {
