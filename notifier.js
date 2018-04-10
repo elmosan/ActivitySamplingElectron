@@ -12,8 +12,8 @@ function doNotify(evt){
   notifier = new WindowsBalloon({});
 
   notifier.notify({
-    title: 'ActivitySampling',
-    message: 'What are you doing?',
+    title: 'ActivitySampling Current Activity',
+    message: 'What are you doing? \r\rLast activity: ' + script.activity + '\r',
     icon: path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico'),
     sound: true,
     time: 8000,

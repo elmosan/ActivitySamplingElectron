@@ -2,13 +2,15 @@
 const $ = require('jquery');
 const jetpack = require('fs-jetpack');
 
-
 module.exports = script = {
+  activity: '',
+  entry: '',
   writeLog: function writeLog(){
     var timeStamp = getTimeStamp();
     var input = $('#inputActivity')[0].value;
     var lst = $('#lstOutput')[0];
-    var text = timeStamp + "; " + input + " \n";
+    script.activity = input;
+    script.entry = text = timeStamp + "; " + input + " \n";
 
     writeToLogFile(text);
     createListElement(text, lst);
