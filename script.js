@@ -8,7 +8,7 @@ module.exports = script = {
     var timeStamp = getTimeStamp();
     var input = $('#inputActivity')[0].value;
     var lst = $('#lstOutput')[0];
-    var text = timeStamp + " " + input + " \n";
+    var text = timeStamp + "; " + input + " \n";
 
     writeToLogFile(text);
     createListElement(text, lst);
@@ -70,7 +70,7 @@ function getTimeStamp() {
     ss='0'+ss
   }
 
-  return yyyy+'.'+mm+'.'+dd+' '+hh+':'+MM+':'+ss;
+  return dd+'.'+mm+'.'+yyyy+' '+hh+':'+MM+':'+ss;
 }
 
 function onKeyUp(evt) {

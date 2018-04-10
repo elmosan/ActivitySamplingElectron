@@ -10,7 +10,7 @@ var notifier;
 
 function doNotify(evt){
   notifier = new WindowsBalloon({});
-  
+
   notifier.notify({
     title: 'ActivitySampling',
     message: 'What are you doing?',

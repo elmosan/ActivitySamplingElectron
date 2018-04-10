@@ -19,7 +19,25 @@ let appIcon;
 let iconPath = path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico');
 let dataPath = storage.getDataPath();
 
+// Check if other instance is running
+let singleInstance = !app.makeSingleInstance(function(cmdArgs, workDir){
+
+  if(mainWindow){
+    if (mainWindow.isMinimized()){
+      mainWindow.restore();
+    }
+
+    mainWindow.focus();
+  }
+});
+
+// Close if other instance is running
+if (!singleInstance) {
+  app.quit()
+}
+
 function createWindow () {
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     title: 'ActivitySampling',
@@ -65,15 +83,16 @@ function createWindow () {
       label: 'About'
     },
     {
-      label: 'Maximize',
+      label: 'Open',
       click: function() {
-        mainWindow.show()
+        mainWindow.show();
       }
     },
     {
       label: 'Exit',
       click: function() {
-        mainWindow.close()
+        mainWindow.close();
+		// app.quit();
       }
     }]);
 
