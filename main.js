@@ -10,7 +10,6 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const storage = require('electron-json-storage');
-// const ticker = require('./timer.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,21 +18,23 @@ let appIcon;
 let iconPath = path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico');
 let dataPath = storage.getDataPath();
 
-// Check if other instance is running
-let singleInstance = !app.makeSingleInstance(function(cmdArgs, workDir){
+function createSingleInstance(){
+  // Check if other instance is running
+  let singleInstance = !app.makeSingleInstance(function(cmdArgs, workDir){
 
-  if(mainWindow){
-    if (mainWindow.isMinimized()){
-      mainWindow.restore();
+    if(mainWindow){
+       if (mainWindow.isMinimized()){
+        mainWindow.restore();
+      }
+
+     mainWindow.focus();
     }
+  });
 
-    mainWindow.focus();
+  // Close if other instance is running
+  if (!singleInstance) {
+    app.quit()
   }
-});
-
-// Close if other instance is running
-if (!singleInstance) {
-  app.quit()
 }
 
 function createWindow () {
@@ -121,6 +122,8 @@ app.on('activate', function () {
     createWindow()
   }
 });
+
+createSingleInstance();
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
