@@ -1,60 +1,83 @@
 // global.$ = window.$;
 const $ = require('jquery');
 const jetpack = require('fs-jetpack');
+const logfile = 'ActivitySampling.log';
 
 module.exports = script = {
   activity: '',
   entry: '',
-  writeLog: function writeLog(){
-    var timeStamp = getTimeStamp();
-    var input = $('#inputActivity')[0].value;
-    var lst = $('#lstOutput')[0];
-    script.activity = input;
-    script.entry = text = timeStamp + "; " + input + " \n";
+  logfile: logfile,
+  writeLog: writeLogFile,
+  readLog: readLogFile
+}
 
-    writeToLogFile(text);
-    createListElement(text, lst);
+function readLogFile(){
+  let list = $('#lstOutput')[0];
+  let lines = readLinesFromFile();
+
+  for(let line = 0; line < lines.length; line++){
+    createListElement(lines[line], list);
   }
 }
 
+function readLinesFromFile(){
+  if(jetpack.exists(logfile)){
+    let log = jetpack.read(logfile);
+    let lines = log.split('\n');
+
+    return lines;
+  }
+}
+
+function writeLogFile(){
+  let timeStamp = getTimeStamp();
+  let input = $('#inputActivity')[0].value;
+  let list = $('#lstOutput')[0];
+  script.activity = input;
+  script.entry = text = timeStamp + "; " + input + " \n";
+
+  writeToLogFile(text);
+  createListElement(text, list);
+}
+
 function writeToLogFile(text){
-  var file = 'ActivitySampling.log';
-  if (!jetpack.exists(file)) {
-    jetpack.write(file, text, { atomic: true });
+  if (!jetpack.exists(logfile)) {
+    jetpack.write(logfile, text, { atomic: true });
   }
   else {
-    jetpack.append(file, text, {});
+    jetpack.append(logfile, text, {});
   }
 }
 
 function createListElement(text, list){
-  var entry = document.createElement('li');
-  var att = document.createAttribute('tabindex');
+  let entry = document.createElement('li');
+  let att = document.createAttribute('tabindex');
 
   att.value = "1";
   entry.classList.add('list-group-item');
   entry.setAttributeNode(att);
   entry.appendChild(document.createTextNode(text));
-  list.appendChild(entry);
+  // list.appendChild(entry);
+  list.insertBefore(entry, list.children[0]);
 
   entry.addEventListener("dblclick", selectText);
 }
 
 function selectText(evt){
-  var entry = evt.target;
-  var text = entry.innerText.substr(20);
+  let entry = evt.target;
+  let text = entry.innerText.substr(20);
 
   $('#inputActivity')[0].value = text;
 }
 
 function getTimeStamp() {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1; //January is 0!
-  var yyyy = today.getFullYear();
-  var hh = today.getHours();
-  var MM = today.getMinutes();
-  var ss = today.getSeconds();
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth()+1; //January is 0!
+  let yyyy = today.getFullYear();
+  let hh = today.getHours();
+  let MM = today.getMinutes();
+  let ss = today.getSeconds();
 
   if(dd<10){
       dd='0'+dd;
@@ -77,10 +100,12 @@ function getTimeStamp() {
 
 function onKeyUp(evt) {
   if (evt.keyCode == 13) {
-    script.writeLog();
+    writeLogFile();
   }
 }
 
 $(function() {
   $('#inputActivity')[0].addEventListener("keyup", onKeyUp);
 });
+
+readLogFile();
