@@ -50,6 +50,10 @@ function writeToLogFile(text){
 }
 
 function createListElement(text, list){
+  if (text.length === 0){
+    return;
+  }
+
   let entry = document.createElement('li');
   let att = document.createAttribute('tabindex');
 
