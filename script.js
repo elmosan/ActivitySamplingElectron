@@ -34,7 +34,7 @@ function writeLogFile(){
   let input = $('#inputActivity')[0].value;
   let list = $('#lstOutput')[0];
   script.activity = input;
-  script.entry = text = timeStamp + "; " + input + " \n";
+  script.entry = text = timeStamp + "  " + input + " \n";
 
   writeToLogFile(text);
   createListElement(text, list);
@@ -110,6 +110,7 @@ function onKeyUp(evt) {
 
 $(function() {
   $('#inputActivity')[0].addEventListener("keyup", onKeyUp);
+  $('#btnLog')[0].addEventListener("click", writeLogFile);
 });
 
 readLogFile();

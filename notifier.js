@@ -50,7 +50,3 @@ setInterval(function() {
   doNotify(args);
 
 }, 10000);
-
-$(function() {
-  $('#btnStart')[0].addEventListener("click", doNotify);
-});

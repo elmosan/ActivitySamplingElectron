@@ -14,6 +14,12 @@
     and Electron <script>document.write(process.versions.electron)</script>.
 
     </br></br>
+    <div class="row">
+        <label for="inputInterval" class="col-md-4">Interval in minutes: </label>
+        <input type="text" class="form-control col-md-1" id="inputInterval" value="15">
+        <div class="col-md-1"></div>
+        <button id="btnRestart" type="button" class="btn btn-secondary col-md-2">Restart</button>
+    </div>
     <div class="form-group">
       <label for="inputActivity">Activity:</label>
       <input type="text" class="form-control" id="inputActivity">
@@ -22,7 +28,7 @@
       <ol id="lstOutput" class="list-group"></ol>
     </div>
     </br>
-    <button id="btnStart" type="buton" class="btn btn-primary">Start</button>
+    <button id="btnLog" type="button" class="btn btn-primary col-md-12">Log</button>
 
     <script>
       // You can also require other files to run in this process
