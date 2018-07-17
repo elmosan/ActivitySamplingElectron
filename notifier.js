@@ -5,8 +5,8 @@ const $ = require('jquery');
 const script = require('./script.js');
 // const ipcRenderer  = require('electron').ipcRenderer ;
 
-var notifier;
-// var notifier = new WindowsToaster({});
+let notifier;
+// let notifier = new WindowsToaster({});
 
 function doNotify(evt){
   notifier = new WindowsBalloon({});
@@ -46,7 +46,7 @@ setInterval(function() {
   console.log("Timer intervall", new Date());
   // ipcRenderer.send('timer-message', 'tick');
 
-  var args;
+  let args;
   doNotify(args);
 
-}, 10000);
+}, 900000);

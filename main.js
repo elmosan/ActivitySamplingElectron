@@ -79,7 +79,7 @@ function createWindow () {
   });
 
   appIcon = new Tray(iconPath);
-  var contextMenu = Menu.buildFromTemplate([
+  let contextMenu = Menu.buildFromTemplate([
     {
       label: 'About'
     },
