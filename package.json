@@ -10,9 +10,10 @@
   "author": "elmosan",
   "license": "ISC",
   "devDependencies": {
-    "bootstrap": "^4.1.2",
+    "bootstrap": "^4.1.3",
     "electron": "^2.0.5",
     "electron-json-storage": "^4.1.1",
+    "electron-packager": "^12.1.0",
     "fs-jetpack": "^2.0.0",
     "jquery": "^3.3.1",
     "node-notifier": "^5.2.1",
@@ -20,5 +21,6 @@
     "sql.js": "^0.5.0",
     "standard": "^11.0.1"
   },
-  "repository": "https://github.com/elmosan/ActivitySamplingElectron.git"
+  "repository": "https://github.com/elmosan/ActivitySamplingElectron.git",
+  "dependencies": {}
 }
