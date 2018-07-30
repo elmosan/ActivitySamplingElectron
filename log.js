@@ -4,7 +4,7 @@ const ipcMain = electron.ipcMain
 const jetpack = require('fs-jetpack')
 const logfile = 'ActivitySampling.log'
 
-let log = module.exports = {
+const log = module.exports = {
   activity: '',
   entry: '',
   logfile: logfile,

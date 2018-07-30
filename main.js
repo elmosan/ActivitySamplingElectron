@@ -1,5 +1,8 @@
 const electron = require('electron')
-
+const path = require('path')
+const url = require('url')
+const storage = require('electron-json-storage')
+const log = require('./log.js')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -7,19 +10,14 @@ const BrowserWindow = electron.BrowserWindow
 const Tray = electron.Tray
 const Menu = electron.Menu
 const MenuItem = electron.MenuItem
+const iconPath = path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico')
+const storagePath = storage.getDataPath()
+
 let AppMenu = null
-
-const path = require('path')
-const url = require('url')
-const storage = require('electron-json-storage')
-const log = require('./log.js')
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null
 let appTray = null
-const iconPath = path.join(__dirname, 'Kxmylo-Simple-Utilities-system-monitor.ico')
-const storagePath = storage.getDataPath()
 let storageData = { 'TimerIntervall': 0, 'DevTools': false }
 
 function createSingleInstance() {
@@ -38,6 +36,8 @@ function createSingleInstance() {
   if (!singleInstance) {
     app.quit()
   }
+
+  app.setAppUserModelId('ActivitySampling')
 }
 
 function createWindow () {
@@ -73,8 +73,7 @@ function createWindow () {
     mainWindow = null
   })
 
-  AppMenu = Menu.getApplicationMenu()
-  extendAppMenu()
+  createAppMenu()
   createTrayIcon()
 
   storage.get('ActivitySampling', (error, data) => {
@@ -83,11 +82,7 @@ function createWindow () {
     readStorage(data)
 
     if (storageData.DevTools) {
-      mainWindow.toggleDevTools()
-      let fileMenu = AppMenu.items[0]
-      let optionsMenu = fileMenu.submenu.items[1]
-      let devToolsMenu = optionsMenu.submenu.items[0]
-      devToolsMenu.checked = true
+      setDevToolsMenuCheckBox(true)
     }
   })
 
@@ -123,36 +118,80 @@ createSingleInstance()
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-function extendAppMenu() {
-  let fileMenu = AppMenu.items[0]
-
-  fileMenu.submenu.insert(0, new MenuItem(
+function createAppMenu() {
+  let template = [
     {
-      label: 'Send',
-      click: () => {
-        mainWindow.webContents.send('MainWindowStatus', 'OnSend')
-      }
-    }))
-
-  fileMenu.submenu.insert(1, new MenuItem(
-    {
-      label: 'Options',
-      click: () => {
-      },
+      label: 'File',
       submenu: [
         {
-          label: 'DevTools',
-          type: 'checkbox',
-          click: () => {
-            mainWindow.toggleDevTools()
-            let optionsMenu = fileMenu.submenu.items[1]
-            let devToolsMenu = optionsMenu.submenu.items[0]
-            storageData.DevTools = devToolsMenu.checked
-            saveStorage()
-          }
+          label: 'Send',
+          accelerator: 'CmdOrCtrl+S',
+          click: () => { mainWindow.webContents.send('MainWindowStatus', 'OnSend') }
+        },
+        {
+          label: 'Options',
+          submenu: [
+            {
+              label: 'DevTools',
+              type: 'checkbox',
+              click: () => { checkDevToolsMenuCheckBox() }
+            }
+          ]
+        },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        { role: 'forcereload' },
+        { role: 'toggledevtools' },
+        { type: 'separator' },
+        { role: 'resetzoom' },
+        { role: 'zoomin' },
+        { role: 'zoomout' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'zoom' },
+        { type: 'separator' },
+        { role: 'front' },
+        { role: 'close' }
+      ]
+    },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'About'
         }
       ]
-    }))
+    }
+  ]
+
+  AppMenu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(AppMenu)
 }
 
 function createTrayIcon() {
@@ -190,4 +229,27 @@ function saveStorage() {
       DevTools: storageData.DevTools,
       TimerIntervall: storageData.TimerIntervall
     })
+}
+
+function setDevToolsMenuCheckBox(checked) {
+  if (checked) {
+    mainWindow.toggleDevTools()
+  }
+
+  let fileMenu = AppMenu.items[0]
+  let optionsMenu = fileMenu.submenu.items[1]
+  let devToolsMenu = optionsMenu.submenu.items[0]
+
+  devToolsMenu.checked = checked
+}
+
+function checkDevToolsMenuCheckBox() {
+  mainWindow.toggleDevTools()
+
+  let fileMenu = AppMenu.items[0]
+  let optionsMenu = fileMenu.submenu.items[1]
+  let devToolsMenu = optionsMenu.submenu.items[0]
+
+  storageData.DevTools = devToolsMenu.checked
+  saveStorage()
 }
