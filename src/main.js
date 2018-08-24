@@ -3,6 +3,7 @@ const path = require('path')
 const url = require('url')
 const storage = require('electron-json-storage')
 const log = require('./log.js')
+const repo = require('./repository.js')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -126,7 +127,14 @@ function createAppMenu() {
         {
           label: 'Send',
           accelerator: 'CmdOrCtrl+S',
-          click: () => { mainWindow.webContents.send('MainWindowStatus', 'OnSend') }
+          click: () => {
+            mainWindow.webContents.send('MainWindowStatus', 'OnSend')
+            repo.data.readDatabase()
+            let entry = { 'timeStamp': '12:21 02.01.2018', 'message': 'Test 2', 'duration': 0 }
+            repo.writeEntry(entry)
+            let result = repo.getAll()
+            // repo.data.writeDatabase()
+          }
         },
         {
           label: 'Options',

@@ -43,6 +43,7 @@ function createListElement(text, list) {
   let entry = document.createElement('li')
   let att = document.createAttribute('tabindex')
 
+  text = text.replace('  ', '\xa0\xa0')
   att.value = '1'
   entry.classList.add('list-group-item')
   entry.setAttributeNode(att)
@@ -55,7 +56,7 @@ function createListElement(text, list) {
 
 function selectText(evt) {
   let entry = evt.target
-  let text = entry.innerText.substr(20)
+  let text = entry.innerText.substr(21)
 
   $('#inputActivity')[0].value = text
 }
